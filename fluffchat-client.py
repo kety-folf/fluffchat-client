@@ -7,7 +7,7 @@ from datetime import datetime # lets me get current time
 
 
 # server's IP address
-SERVER_HOST = "127.0.0.1"
+SERVER_HOST = "put server ip here"
 SERVER_PORT = 5002 # server's port
 separator_token = "<SEP>" # seperates client name and message sent by client
 
@@ -32,11 +32,15 @@ def send(event=None): #run this when you send message
     #  send the message
     s.send(bytes(sendNow, "utf8"))
     to_send.set(" ")
+    
 # start gui
 
 top = tkinter.Tk()
+fluffChatName = tkinter.Label(text="Fluffchat", foreground="#FFFFFF", background="#36393F")# set label at top of window to say fluffchat
+
 top.title("fluffchat") #set title of window
-top.geometry("400x400")#set size of window
+top.geometry("800x700")#set size of window
+top.configure(bg='#36393F')
 messages_frame = tkinter.Frame(top)# create message frame for recived messages
 to_send = tkinter.StringVar() # create variable for the message you send
 to_send.set("Type message here") #placeholder text for text box
@@ -44,19 +48,20 @@ scrollbar = tkinter.Scrollbar(messages_frame)# make scrollbar easy to access in 
 
 
 
-msg_list = tkinter.Listbox(messages_frame, height=20, width=50, yscrollcommand=scrollbar.set) #create box for recived messages
+msg_list = tkinter.Listbox(messages_frame, height=30, width=115 , yscrollcommand=scrollbar.set) #create box for recived messages
 # pack things for GUI
 scrollbar.pack(side=tkinter.RIGHT, fill=tkinter.Y)
 msg_list.pack(side=tkinter.LEFT, fill=tkinter.BOTH)
 msg_list.pack()
+fluffChatName.pack()
 scrollbar.config( command = msg_list.yview )# config to make scrollbar work
 messages_frame.pack()
 #create message field and send button
-entry_field = tkinter.Entry(top, textvariable=to_send)
+entry_field = tkinter.Entry(top, textvariable=to_send, width=70)
 entry_field.bind("<Return>", send)
-entry_field.pack()
-send_button = tkinter.Button(top, text="Send", command=send)# make send button
-send_button.pack()
+entry_field.pack(pady=7)
+send_button = tkinter.Button(top, text="Send", command=send, width=30)# make send button
+send_button.pack(pady=5)
 
 
 #threding for reciving messages
