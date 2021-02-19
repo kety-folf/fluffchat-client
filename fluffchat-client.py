@@ -1,13 +1,16 @@
 import socket #lets me use TCP sockets in 
 import tkinter #handles GUI
+import base64
+import blowfish #handles encryption
 from threading import Thread # allows multi threading
 from datetime import datetime # lets me get current time
-
+cipher = blowfish.Cipher(b"thisIsATest")
 
 
 
 # server's IP address
-SERVER_HOST = "put server ip here"
+print("158.140.240.43 is the default server port will always be 5002")
+SERVER_HOST = input("input server ip input: ")
 SERVER_PORT = 5002 # server's port
 separator_token = "<SEP>" # seperates client name and message sent by client
 
@@ -22,15 +25,25 @@ name = input("Enter your name: ")
 
 def receive(): # run this on message recevived
     while True:
-        message = s.recv(1024).decode("utf8")# decode message from server
-        
+        message = s.recv(1024)# get message from server
+        #decrypt message
+        message = b"".join(cipher.decrypt_ecb_cts(message))
+ 
+        message = base64.b64decode(message)
+        message = message.decode('utf8')
+        message = message.replace(separator_token, ": ")
         msg_list.insert(tkinter.END, message)# print message to GUI
 
 def send(event=None): #run this when you send message
     date_now = datetime.now().strftime('%d/%m/%Y %H:%M') 
     sendNow = f"{date_now} {name} {separator_token} {to_send.get()}" # string to send to server 
+#encrypt message
+    sendNow = sendNow.encode('utf8')
+    sendNow_b64 = base64.b64encode(sendNow)
+    sendNow_b64 = b"".join(cipher.encrypt_ecb_cts(sendNow_b64))
     #  send the message
-    s.send(bytes(sendNow, "utf8"))
+    print(sendNow_b64)
+    s.send(sendNow_b64)# value must be byte to send
     to_send.set(" ")
     
 # start gui
