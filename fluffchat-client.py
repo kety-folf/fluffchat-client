@@ -9,7 +9,7 @@ cipher = blowfish.Cipher(b"thisIsATest")
 
 
 # server's IP address
-print("158.140.240.43 is the default server port will always be 5002")
+print("some ip here is the default server port will always be 5002")
 SERVER_HOST = input("input server ip input: ")
 SERVER_PORT = 5002 # server's port
 separator_token = "<SEP>" # seperates client name and message sent by client
