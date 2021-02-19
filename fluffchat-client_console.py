@@ -3,7 +3,7 @@ import random
 from threading import Thread
 from datetime import datetime
 from colorama import Fore, init, Back
-
+#doesn't support end to end encryption 
 # init colors
 init()
 
